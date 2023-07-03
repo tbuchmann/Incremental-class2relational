@@ -1,7 +1,7 @@
 # Incremental-class2relational
 A BXtendDSL solution for the TTC2023 case: Incremental MTL vs. GPLs: Class into Relational Database Schema Transformation Case
 
-## The case revealed one bug in our code generation engine
+## The case revealed a bug in our code generation engine
 
 To make the solution run, please do the following, after Code has been generated from the BXtendDSL specification:
 
