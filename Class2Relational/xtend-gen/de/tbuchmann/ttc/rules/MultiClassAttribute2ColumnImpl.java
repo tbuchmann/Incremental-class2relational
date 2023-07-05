@@ -1,6 +1,7 @@
 package de.tbuchmann.ttc.rules;
 
 import class_.Attribute;
+import class_.Classifier;
 import class_.DataType;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
@@ -23,11 +24,19 @@ public class MultiClassAttribute2ColumnImpl extends MultiClassAttribute2Column {
   }
 
   @Override
-  protected MultiClassAttribute2Column.Type4tName tNameFrom(final String attName, final class_.Class owner) {
-    String _name = owner.getName();
-    String _plus = (_name + "_");
-    String _plus_1 = (_plus + attName);
-    return new MultiClassAttribute2Column.Type4tName(_plus_1);
+  protected MultiClassAttribute2Column.Type4tName tNameFrom(final String attName, final class_.Class owner, final Classifier attType) {
+    MultiClassAttribute2Column.Type4tName _xblockexpression = null;
+    {
+      String name = "";
+      boolean _equals = Objects.equal(owner, null);
+      if (_equals) {
+        name = "Table";
+      } else {
+        name = owner.getName();
+      }
+      _xblockexpression = new MultiClassAttribute2Column.Type4tName(((name + "_") + attName));
+    }
+    return _xblockexpression;
   }
 
   @Override

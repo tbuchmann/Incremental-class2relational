@@ -1,7 +1,6 @@
 package de.tbuchmann.ttc.rules;
 
 import class_.Classifier;
-import com.google.common.base.Objects;
 import de.tbuchmann.ttc.corrmodel.Corr;
 import de.tbuchmann.ttc.corrmodel.CorrElem;
 import de.tbuchmann.ttc.corrmodel.SingleElem;
@@ -14,8 +13,7 @@ public class Utils {
     Type _xblockexpression = null;
     {
       Corr corr = Elem2Elem.getCorrMap().get(type);
-      boolean _equals = Objects.equal(corr, null);
-      if (_equals) {
+      if ((corr == null)) {
         return null;
       }
       CorrElem _get = corr.getTarget().get(0);

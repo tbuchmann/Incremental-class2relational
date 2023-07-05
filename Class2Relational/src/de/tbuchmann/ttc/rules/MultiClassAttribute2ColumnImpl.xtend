@@ -10,6 +10,7 @@ import de.tbuchmann.ttc.rules.MultiClassAttribute2Column.Type4idName
 import de.tbuchmann.ttc.rules.MultiClassAttribute2Column.Type4fkName
 import relational_.Column
 import class_.DataType
+import class_.Classifier
 
 class MultiClassAttribute2ColumnImpl extends MultiClassAttribute2Column {	
 	new(Class2Relational trafo) {
@@ -20,8 +21,13 @@ class MultiClassAttribute2ColumnImpl extends MultiClassAttribute2Column {
 		(att.isMultiValued) && (att.type instanceof Class)
 	}
 	
-	override protected tNameFrom(String attName, Class owner) {
-		new Type4tName(owner.name + "_" + attName)
+	override protected tNameFrom(String attName, Class owner, Classifier attType) {
+		var name = ""
+		if (owner == null)
+			name = "Table"
+		else
+			name = owner.name
+		new Type4tName(name + "_" + attName)
 	}	
 	
 	override protected idNameFrom(String attName, Class attOwner) {

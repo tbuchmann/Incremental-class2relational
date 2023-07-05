@@ -34,7 +34,7 @@ rule MultiClassAttribute2Column
 		Column id | creation;
 		Column fk | creation;
 	
-	att.name att.owner --> t.name;
+	att.name att.owner att.type --> t.name;
 	att.name att.owner --> id.name;
 	att.name att.owner --> fk.name;
 

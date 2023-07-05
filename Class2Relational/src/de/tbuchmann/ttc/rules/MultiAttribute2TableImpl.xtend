@@ -33,7 +33,7 @@ class MultiAttribute2TableImpl extends MultiAttribute2Table {
 	
 	override protected tblNameFrom(String attName, Class owner) {
 		var tblName = owner.name
-		if (tblName == null || tblName === "") tblName = "Table"
+		if (tblName === null || tblName === "") tblName = "Table"
 		new Type4tblName(owner.name + "_" + attName)
 	}
 	

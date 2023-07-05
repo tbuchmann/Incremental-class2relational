@@ -7,6 +7,9 @@ import java.util.List
 import relational_.Column
 import de.tbuchmann.ttc.rules.Class2Table.Type4col
 import class_.DataType
+import org.eclipse.emf.ecore.util.EcoreUtil
+import de.tbuchmann.ttc.corrmodel.SingleElem
+import class_.Attribute
 
 class Class2TableImpl extends Class2Table {	
 	new(Class2Relational trafo) {
@@ -29,9 +32,35 @@ class Class2TableImpl extends Class2Table {
 			var key = parent.col.get(0)
 			columnsList += key	
 		}
-		// add SingleColtoDatatype (attSinCol) and attMulCol directly to columns
-		columnsList += attSinCol
-		columnsList += attSinCol_2		
+
+		// check for columns with null-Type and delete them (avoid dangling references)		
+		for (Column c : attSinCol) {
+			var obj = unwrap(c.corr.source.get(0) as SingleElem) as Attribute
+			if (obj.type !== null) {
+				columnsList += c	
+			}
+			else {
+				c.owner = null
+				EcoreUtil.delete(c, true)
+			}
+		}
+
+		for (Column c : attSinCol_2) {
+			var obj = unwrap(c.corr.source.get(0) as SingleElem) as Attribute
+			if (obj.type !== null) {
+				columnsList += c	
+			}
+			else {
+				c.owner = null
+				EcoreUtil.delete(c, true)
+			}
+		}
+		// delete Tables that are created from attributes with null-Type
+		for (Table t : attMulT) {
+			var obj = unwrap(t.corr.source.get(0) as SingleElem) as Attribute
+			if (obj.type === null)
+				EcoreUtil.delete(t, true);
+		}		
 		new Type4col(columnsList)
 	}
 
@@ -39,4 +68,21 @@ class Class2TableImpl extends Class2Table {
 		val datatype = sourceModel.contents.filter(typeof(DataType)).findFirst[name == "Integer"]
 		datatype
 	}	
+	
+	def removeNullTypeColumns(List<Column> cols) {
+		//val nonNullColumns = newArrayList
+		for (Column c : cols) {
+			if (c.type === null) 
+				EcoreUtil.delete(c, true);
+			// check if corresponding attribute has null type
+			var obj = unwrap(c.corr.source.get(0) as SingleElem) as Attribute
+			if (obj.type === null) {
+				c.owner = null;
+				EcoreUtil.delete(c, true);	
+			}
+//			if (c.type !== null || obj.type !== null)
+//				nonNullColumns += c
+		}
+		//nonNullColumns
+	}
 }

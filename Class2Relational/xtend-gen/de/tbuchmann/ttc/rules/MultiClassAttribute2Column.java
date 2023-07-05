@@ -1,6 +1,7 @@
 package de.tbuchmann.ttc.rules;
 
 import class_.Attribute;
+import class_.Classifier;
 import com.google.common.collect.Iterators;
 import de.tbuchmann.ttc.corrmodel.Corr;
 import de.tbuchmann.ttc.corrmodel.CorrElem;
@@ -324,7 +325,7 @@ public abstract class MultiClassAttribute2Column extends Elem2Elem {
         CorrElem _get_2 = _trg.get(2);
         Object _unwrap_2 = Elem2Elem.unwrap(((SingleElem) _get_2));
         final Column fk = ((Column) _unwrap_2);
-        final MultiClassAttribute2Column.Type4tName _tName = this.tNameFrom(att_1.getName(), att_1.getOwner());
+        final MultiClassAttribute2Column.Type4tName _tName = this.tNameFrom(att_1.getName(), att_1.getOwner(), att_1.getType());
         t.setName(_tName.tName);
         final MultiClassAttribute2Column.Type4idName _idName = this.idNameFrom(att_1.getName(), att_1.getOwner());
         id.setName(_idName.idName);
@@ -386,7 +387,7 @@ public abstract class MultiClassAttribute2Column extends Elem2Elem {
 
   protected abstract boolean filterAtt(final Attribute att);
 
-  protected abstract MultiClassAttribute2Column.Type4tName tNameFrom(final String attName, final class_.Class attOwner);
+  protected abstract MultiClassAttribute2Column.Type4tName tNameFrom(final String attName, final class_.Class attOwner, final Classifier attType);
 
   protected abstract MultiClassAttribute2Column.Type4idName idNameFrom(final String attName, final class_.Class attOwner);
 

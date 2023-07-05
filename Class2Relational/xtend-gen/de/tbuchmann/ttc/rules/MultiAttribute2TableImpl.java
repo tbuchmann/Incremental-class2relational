@@ -54,7 +54,7 @@ public class MultiAttribute2TableImpl extends MultiAttribute2Table {
     MultiAttribute2Table.Type4tblName _xblockexpression = null;
     {
       String tblName = owner.getName();
-      if ((Objects.equal(tblName, null) || (tblName == ""))) {
+      if (((tblName == null) || (tblName == ""))) {
         tblName = "Table";
       }
       String _name = owner.getName();

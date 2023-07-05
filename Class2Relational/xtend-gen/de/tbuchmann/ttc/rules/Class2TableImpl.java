@@ -1,12 +1,17 @@
 package de.tbuchmann.ttc.rules;
 
+import class_.Attribute;
+import class_.Classifier;
 import class_.DataType;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
+import de.tbuchmann.ttc.corrmodel.CorrElem;
+import de.tbuchmann.ttc.corrmodel.SingleElem;
 import de.tbuchmann.ttc.trafo.Class2Relational;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -15,6 +20,7 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import relational_.Column;
 import relational_.RelationalFactory;
 import relational_.Table;
+import relational_.Type;
 
 @SuppressWarnings("all")
 public class Class2TableImpl extends Class2Table {
@@ -46,8 +52,48 @@ public class Class2TableImpl extends Class2Table {
         Column key = parent.getCol().get(0);
         columnsList.add(key);
       }
-      Iterables.<Column>addAll(columnsList, attSinCol);
-      Iterables.<Column>addAll(columnsList, attSinCol_2);
+      for (final Column c : attSinCol) {
+        {
+          CorrElem _get = this.getCorr(c).getSource().get(0);
+          Object _unwrap = Elem2Elem.unwrap(((SingleElem) _get));
+          Attribute obj = ((Attribute) _unwrap);
+          Classifier _type = obj.getType();
+          boolean _tripleNotEquals = (_type != null);
+          if (_tripleNotEquals) {
+            columnsList.add(c);
+          } else {
+            c.setOwner(null);
+            EcoreUtil.delete(c, true);
+          }
+        }
+      }
+      for (final Column c_1 : attSinCol_2) {
+        {
+          CorrElem _get = this.getCorr(c_1).getSource().get(0);
+          Object _unwrap = Elem2Elem.unwrap(((SingleElem) _get));
+          Attribute obj = ((Attribute) _unwrap);
+          Classifier _type = obj.getType();
+          boolean _tripleNotEquals = (_type != null);
+          if (_tripleNotEquals) {
+            columnsList.add(c_1);
+          } else {
+            c_1.setOwner(null);
+            EcoreUtil.delete(c_1, true);
+          }
+        }
+      }
+      for (final Table t : attMulT) {
+        {
+          CorrElem _get = this.getCorr(t).getSource().get(0);
+          Object _unwrap = Elem2Elem.unwrap(((SingleElem) _get));
+          Attribute obj = ((Attribute) _unwrap);
+          Classifier _type = obj.getType();
+          boolean _tripleEquals = (_type == null);
+          if (_tripleEquals) {
+            EcoreUtil.delete(t, true);
+          }
+        }
+      }
       _xblockexpression = new Class2Table.Type4col(columnsList);
     }
     return _xblockexpression;
@@ -64,5 +110,26 @@ public class Class2TableImpl extends Class2Table {
       _xblockexpression = datatype;
     }
     return _xblockexpression;
+  }
+
+  public void removeNullTypeColumns(final List<Column> cols) {
+    for (final Column c : cols) {
+      {
+        Type _type = c.getType();
+        boolean _tripleEquals = (_type == null);
+        if (_tripleEquals) {
+          EcoreUtil.delete(c, true);
+        }
+        CorrElem _get = this.getCorr(c).getSource().get(0);
+        Object _unwrap = Elem2Elem.unwrap(((SingleElem) _get));
+        Attribute obj = ((Attribute) _unwrap);
+        Classifier _type_1 = obj.getType();
+        boolean _tripleEquals_1 = (_type_1 == null);
+        if (_tripleEquals_1) {
+          c.setOwner(null);
+          EcoreUtil.delete(c, true);
+        }
+      }
+    }
   }
 }

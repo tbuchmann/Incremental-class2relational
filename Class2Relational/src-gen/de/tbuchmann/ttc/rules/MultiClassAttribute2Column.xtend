@@ -36,7 +36,7 @@ abstract class MultiClassAttribute2Column extends Elem2Elem {
 			val id = unwrap(_trg.get(1) as SingleElem) as relational_.Column
 			val fk = unwrap(_trg.get(2) as SingleElem) as relational_.Column
 			
-			val _tName = tNameFrom(att.getName(), att.getOwner())
+			val _tName = tNameFrom(att.getName(), att.getOwner(), att.getType())
 			t.setName(_tName.tName)
 			
 			val _idName = idNameFrom(att.getName(), att.getOwner())
@@ -90,7 +90,7 @@ abstract class MultiClassAttribute2Column extends Elem2Elem {
 	@Data protected static class Type4tName {
 		String tName
 	}
-	def protected abstract Type4tName tNameFrom(String attName, class_.Class attOwner);
+	def protected abstract Type4tName tNameFrom(String attName, class_.Class attOwner, class_.Classifier attType);
 	
 	@Data protected static class Type4idName {
 		String idName

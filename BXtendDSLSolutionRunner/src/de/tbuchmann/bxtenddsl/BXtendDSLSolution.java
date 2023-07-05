@@ -67,7 +67,7 @@ public class BXtendDSLSolution  {
     }
 
     protected void loadModels() {
-    	String filePath = "models/correctness13";
+    	String filePath = "models/correctness7";
     	source = loadModel(filePath + "/class.xmi");
         changes = loadModel(filePath + "/change.xmi");
         target = createModel(filePath + "/relational.xmi");
@@ -140,7 +140,12 @@ public class BXtendDSLSolution  {
 //			EcoreUtil.delete(att, true);
 //		} // end correctness6
     	
-    	// change for correctness7 does the same as correctness6?
+    	// change for correctness7 - set type of attribute closest friend to null
+    	Optional<EObject> person = source.getContents().stream().filter(o -> o instanceof class_.Class).filter(o -> ((class_.Class)o).getName().equals("Person") ).findFirst();
+    	if (person != null) {
+			Attribute att = ((class_.Class)person.get()).getAttr().stream().filter(a -> a.getName().equals("closestFriend")).findFirst().get();
+			att.setType(null);
+		} // end correctness7
     	
     	// change for correctness8 - add new class "House"
 //    	class_.Class house = Class_Factory.eINSTANCE.createClass();
@@ -160,10 +165,10 @@ public class BXtendDSLSolution  {
 //		newAttr.setName("newSingleValuedAttribute");
     	
     	// change for correctness13 - delete Person class
-    	Optional<EObject> person = source.getContents().stream().filter(o -> o instanceof class_.Class).filter(o -> ((class_.Class)o).getName().equals("Person") ).findFirst();
-    	if (person != null) {
-    		EcoreUtil.delete(person.get(), true);
-    	}
+//    	Optional<EObject> person = source.getContents().stream().filter(o -> o instanceof class_.Class).filter(o -> ((class_.Class)o).getName().equals("Person") ).findFirst();
+//    	if (person != null) {
+//    		EcoreUtil.delete(person.get(), true);
+//    	}
     	
     	trafo.sourceToTarget();
     }
