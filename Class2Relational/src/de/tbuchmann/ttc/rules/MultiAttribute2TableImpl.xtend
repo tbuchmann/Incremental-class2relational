@@ -7,12 +7,14 @@ import class_.DataType
 import de.tbuchmann.ttc.trafo.Class2Relational
 import relational_.RelationalFactory
 
+// Transformation
 class MultiAttribute2TableImpl extends MultiAttribute2Table {	
 	new(Class2Relational trafo) {
 		super(trafo)
 	}
 	
 	override protected filterAtt(Attribute att) {
+		// Model Traversal
 		(att.isMultiValued) && !(att.type instanceof Class) 
 	}
 	

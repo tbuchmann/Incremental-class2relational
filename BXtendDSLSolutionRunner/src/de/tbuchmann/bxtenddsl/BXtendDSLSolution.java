@@ -67,6 +67,7 @@ public class BXtendDSLSolution  {
     }
 
     protected void loadModels() {
+    	// Setup
     	String filePath = "models/correctness7";
     	source = loadModel(filePath + "/class.xmi");
         changes = loadModel(filePath + "/change.xmi");
@@ -170,10 +171,12 @@ public class BXtendDSLSolution  {
 //    		EcoreUtil.delete(person.get(), true);
 //    	}
     	
+    	// execute the transformation
     	trafo.sourceToTarget();
     }
 
     protected void saveTarget() throws IOException {
+    	// save the target model
         target.save(Collections.emptyMap());
     }
 	
@@ -193,6 +196,7 @@ public class BXtendDSLSolution  {
     }
 
     protected void applyTransformation() {
+    	// execute the transformation
     	trafo.sourceToTarget();
     }
     

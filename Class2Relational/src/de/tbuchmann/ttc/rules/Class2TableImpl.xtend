@@ -11,6 +11,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import de.tbuchmann.ttc.corrmodel.SingleElem
 import class_.Attribute
 
+// Transformation
 class Class2TableImpl extends Class2Table {	
 	new(Class2Relational trafo) {
 		super(trafo)
@@ -35,6 +36,7 @@ class Class2TableImpl extends Class2Table {
 
 		// check for columns with null-Type and delete them (avoid dangling references)		
 		for (Column c : attSinCol) {
+			// Tracing
 			var obj = unwrap(c.corr.source.get(0) as SingleElem) as Attribute
 			if (obj.type !== null) {
 				columnsList += c	
@@ -46,17 +48,18 @@ class Class2TableImpl extends Class2Table {
 		}
 
 		for (Column c : attSinCol_2) {
+			// Tracing
 			var obj = unwrap(c.corr.source.get(0) as SingleElem) as Attribute
 			if (obj.type !== null) {
 				columnsList += c	
 			}
 			else {
-				c.owner = null
 				EcoreUtil.delete(c, true)
 			}
 		}
 		// delete Tables that are created from attributes with null-Type
 		for (Table t : attMulT) {
+			// Tracing
 			var obj = unwrap(t.corr.source.get(0) as SingleElem) as Attribute
 			if (obj.type === null)
 				EcoreUtil.delete(t, true);
@@ -65,24 +68,22 @@ class Class2TableImpl extends Class2Table {
 	}
 
 	def findIntegerDatatype() {
+		// Model traversal
 		val datatype = sourceModel.contents.filter(typeof(DataType)).findFirst[name == "Integer"]
 		datatype
 	}	
 	
 	def removeNullTypeColumns(List<Column> cols) {
-		//val nonNullColumns = newArrayList
 		for (Column c : cols) {
 			if (c.type === null) 
 				EcoreUtil.delete(c, true);
 			// check if corresponding attribute has null type
+			// Tracing
 			var obj = unwrap(c.corr.source.get(0) as SingleElem) as Attribute
 			if (obj.type === null) {
 				c.owner = null;
 				EcoreUtil.delete(c, true);	
 			}
-//			if (c.type !== null || obj.type !== null)
-//				nonNullColumns += c
 		}
-		//nonNullColumns
 	}
 }

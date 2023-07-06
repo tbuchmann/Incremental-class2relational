@@ -77,7 +77,6 @@ public class Class2TableImpl extends Class2Table {
           if (_tripleNotEquals) {
             columnsList.add(c_1);
           } else {
-            c_1.setOwner(null);
             EcoreUtil.delete(c_1, true);
           }
         }

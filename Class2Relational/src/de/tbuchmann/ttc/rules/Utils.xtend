@@ -4,6 +4,7 @@ import class_.Classifier
 import de.tbuchmann.ttc.corrmodel.SingleElem
 import relational_.Type
 
+// Helper/Utility class
 class Utils {
 	
 	def static getType(Classifier type) {

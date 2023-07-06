@@ -7,12 +7,14 @@ import class_.DataType
 import de.tbuchmann.ttc.rules.SingleClassAttribute2Column.Type4colName
 import de.tbuchmann.ttc.rules.SingleClassAttribute2Column.Type4colType
 
+// Transformation
 class SingleClassAttribute2ColumnImpl extends SingleClassAttribute2Column {	
 	new(Class2Relational trafo) {
 		super(trafo)
 	}
 	
 	override protected filterAtt(Attribute att) {
+		// Model Traversal
 		!(att.isMultiValued) && !(att.type instanceof DataType) 
 	}
 	
@@ -25,6 +27,7 @@ class SingleClassAttribute2ColumnImpl extends SingleClassAttribute2Column {
 	}
 	
 	def findIntegerDatatype() {
+		// Model Traversal
 		val datatype = sourceModel.contents.filter(typeof(DataType)).findFirst[name == "Integer"]
 		datatype
 	}

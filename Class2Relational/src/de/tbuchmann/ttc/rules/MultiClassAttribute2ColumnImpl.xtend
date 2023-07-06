@@ -12,12 +12,14 @@ import relational_.Column
 import class_.DataType
 import class_.Classifier
 
+// Transformation
 class MultiClassAttribute2ColumnImpl extends MultiClassAttribute2Column {	
 	new(Class2Relational trafo) {
 		super(trafo)
 	}
 	
 	override protected filterAtt(Attribute att) {
+		// Model Traversal
 		(att.isMultiValued) && (att.type instanceof Class)
 	}
 	
@@ -49,6 +51,7 @@ class MultiClassAttribute2ColumnImpl extends MultiClassAttribute2Column {
 	}
 	
 	def findIntegerDatatype() {
+		// Model Traversal
 		val datatype = sourceModel.contents.filter(typeof(DataType)).findFirst[name == "Integer"]
 		datatype
 	}	
