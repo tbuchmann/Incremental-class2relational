@@ -1,35 +1,22 @@
 package de.tbuchmann.bxtenddsl;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Optional;
-
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-import Changes.ChangesPackage;
-import class_.Attribute;
-import class_.Class_Factory;
-import class_.Class_Package;
+import atl.research.AbstractDriver;
 import de.tbuchmann.ttc.trafo.Class2Relational;
-import relational_.RelationalPackage;
 
-public class BXtendDSLSolution  {
+public class BXtendDSLSolution extends AbstractDriver {
 	private Class2Relational trafo;
-	protected ResourceSet resourceSet = new ResourceSetImpl();
-    protected Resource source;
-    protected Resource target;
-    protected Resource changes;
+//	protected ResourceSet resourceSet = new ResourceSetImpl();
+//    protected Resource source;
+//    protected Resource target;
+//    protected Resource changes;
     protected Resource corr;
 
-    boolean batchMode = false;
-
+ //   boolean batchMode = false;
+/*
     public Resource getSource() {
         return source;
     }
@@ -45,14 +32,21 @@ public class BXtendDSLSolution  {
     public boolean isBatchMode() {
         return batchMode;
     }
-
+*/
+    @Override
     public void init() {
-        batchMode = (System.getenv("BATCH_MODE") != null);
-        setupResourceSet();
-    	loadModels();
-    	trafo = new Class2Relational(source, target, corr);
+    	try {
+			super.init();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//        (System.getenv("BATCH_MODE") != null);
+//        setupResourceSet();
+//    	loadModels();
+    	trafo = new Class2Relational(getSource(), getTarget(), corr);
     }
-    
+/*    
     protected void setupResourceSet() {
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
             "xmi",
@@ -65,17 +59,24 @@ public class BXtendDSLSolution  {
         e = RelationalPackage.eINSTANCE;
         e = ChangesPackage.eINSTANCE;
     }
-
+*/
+    @Override
     protected void loadModels() {
-    	// Setup
-    	String filePath = "models/correctness7";
-    	source = loadModel(filePath + "/class.xmi");
-        changes = loadModel(filePath + "/change.xmi");
-        target = createModel(filePath + "/relational.xmi");
-        corr = createModel(filePath + "/corr.xmi");
-        EcoreUtil.resolveAll(resourceSet);
+/*
+    	source = loadModel(System.getenv("SOURCE_PATH"));//loadModel(filePath + "/class.xmi");
+    	changes = loadModel(System.getenv("CHANGE_PATH"));
+    	target = createModel(System.getenv("TARGET_PATH"));
+ */
+    	try {
+			super.loadModels();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	corr =  getResourceSet().createResource(URI.createFileURI(System.getenv("SOURCE_PATH") + ".corr.xmi"));
+        EcoreUtil.resolveAll(getResourceSet());
     }
-
+/*
     protected Resource loadModel(String modelPath) {
         System.out.println("Loading model from " + modelPath);
         return resourceSet.getResource(URI.createFileURI(modelPath), true);
@@ -84,7 +85,8 @@ public class BXtendDSLSolution  {
     protected Resource createModel(String modelPath) {
         return resourceSet.createResource(URI.createFileURI(modelPath));
     }
-
+*/
+    /*
     protected void applyChange() {
 //    	EcoreUtil.resolveAll(resourceSet);
 //        // we ignore change models that are empty (for checking correctness)
@@ -179,7 +181,7 @@ public class BXtendDSLSolution  {
     	// save the target model
         target.save(Collections.emptyMap());
     }
-	
+*/	
     public static void main(String[] args) throws Exception {
     	BXtendDSLSolution solution = new BXtendDSLSolution();
 
